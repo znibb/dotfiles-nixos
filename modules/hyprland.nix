@@ -16,7 +16,8 @@
         "$mod" = "SUPER";
         bind = [
           "$mod, Q, exec, alacritty"
-        ]
+        ];
       };
     };
+  };
 }
