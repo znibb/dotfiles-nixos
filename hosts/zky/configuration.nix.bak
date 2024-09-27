@@ -1,0 +1,135 @@
+# Edit this configuration file to define what should be installed on
+# your system. Help is available in the configuration.nix(5) man page, on
+# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
+
+{ config, lib, pkgs, user, hostname, version ... }:
+
+{
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
+
+  boot = {
+    # Use the latest linux kernel
+    kernelPackages = pkgs.linuxPackages_latest;
+    # Grub bootloader stuff
+    loader = {
+      efi.canTouchEfiVariables = true;
+      grub = {
+        enable = true;
+        efiSupport = true;
+        device = "nodev";
+      };
+    };
+  };
+
+  nix = {
+    # Enable flakes
+    settings = {
+      experimental-features = [ "nix-command" "flakes" ];
+      auto-optimise-store = true;
+    };
+  };
+
+  # Allow usage of closed source packages
+  nixpkgs.config.allowUnfree = true;
+
+  networking = {
+    hostName = "${hostname}";
+    networkmanager = {
+      enable = true;
+    };
+  };
+
+  # Set your time zone.
+  time.timeZone = "Europe/Stockholm";
+
+  # Select internationalisation properties.
+  i18n.defaultLocale = "en_US.UTF-8";
+  console.font = "Lat2-Terminus16";
+
+  environment.sessionVariables = {
+    WLR_NO_HARDWARE_CURSORS = "1";
+    NIXOS_OZONE_WL = "1";
+  };
+
+  hardware = {
+    opengl.enable = true;
+    nvidia.modesetting.enable = true;
+  };
+  
+  # Enable sound.
+  # hardware.pulseaudio.enable = true;
+  # OR
+  # services.pipewire = {
+  #   enable = true;
+  #   pulse.enable = true;
+  # };
+
+  users.users.${user} = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" "docker"];
+    home = "/home/${user}";
+    #shell = pkgs.zsh;
+    #packages = with pkgs; [
+    #  firefox
+    #  tree
+    #];
+  };
+
+  # Enable the OpenSSH daemon
+  services.openssh.enable = true;
+
+  # List packages installed in system profile. To search, run:
+  # $ nix search wget
+  environment.systemPackages = with pkgs; [
+    vim
+    wget
+    kitty
+    dolphin
+    gnupg
+    gpg-tui
+    firefox
+    tree
+    wofi
+    tlrc
+    git
+    lazygit
+    home-manager
+  ];
+
+  #programs.git = {
+  #  enable = true;
+  #  userName = "Pontus Berlin";
+  #  userEmail = "pontus@b3rl1n.com";
+  #  configExtra = {
+  #    push = { autoSetupRemote = true; };
+  #    init.defaultBranch = "main";
+  #  };
+  #};
+
+  programs = {
+    hyprland = {
+      enable = true;
+      xwayland.enable = true;
+    };
+
+    gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
+    };
+
+    nh = {
+      enable = true;
+      flake = "/home/$user}/.flake";
+    };
+  };
+  
+
+  # =========
+  # HANDS OFF
+  system.stateVersion = "24.05";
+
+}
+

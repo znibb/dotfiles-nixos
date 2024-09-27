@@ -1,0 +1,33 @@
+{ config, pkgs, ... }:
+
+{
+  home.username = "znibb";
+  home.homeDirectory = "/home/znibb";
+
+  # Git
+  programs.git = {
+    enable = true;
+    userName = "Pontus Berlin";
+    userEmail = "pontus@b3rl1n.com";
+  };
+
+  # Alacritty
+  programs.alacritty = {
+    enable = true;
+    settings = {
+      add_newline = true;
+      aws.disabled = true;
+      gcloud.disabled = true;
+      line_break.disabled = false;
+    };
+  };
+
+  programs.zsh = {
+    enable = true;
+  };
+
+  # Let home manager install and manage itself
+  programs.home-manager.enable = true;
+
+  home.stateVersion = "24.05";
+}
