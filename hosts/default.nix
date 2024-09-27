@@ -2,7 +2,7 @@
 #
 # Loads shared and host-specific configurations
 
-{ lib, inputs, nixpkgs, nixpkgs-stable, nixos-hardware, home-manager, ... }:
+{ lib, inputs, nixpkgs, nixpkgs-stable, nixos-hardware, home-manager, nixvim, ... }:
 
 let
   system = "x86_64-linux";
@@ -23,9 +23,15 @@ in {
     inherit system;
     specialArgs = { inherit inputs system stable user; };
     modules = [
+      # Shared config
       ./configuration-shared.nix
+      # Host-specific config
       ./zky/configuration.nix
+      
+      # Neovim
+      nixvim.nixosModules.nixvim
 
+      # Home-manager
       home-manager.nixosModules.home-manager {
         home-manager = {
           useGlobalPkgs = true;

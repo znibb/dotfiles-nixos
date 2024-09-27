@@ -2,13 +2,9 @@
 { config, pkgs, user, ... }:
 
 {
-  # Let home manager install and manage itself
+  # Home-manager settings
   programs.home-manager.enable = true;
-
-  # Set Home Manager release
   home.stateVersion = "24.05";
-
-  # User info
   home.username = "${user}";
   home.homeDirectory = "/home/${user}";
 
@@ -52,6 +48,18 @@
       "nrs" = "sudo nixos-rebuild switch --flake ~/.dotfiles";
       "vim" = "nvim";
       "l"   = "ls -lah --group-directories-first";
+      
+      # Git
+      "g"   = "git";
+      "ga"  = "git add";
+      "gc"  = "git commit";
+      "gd"  = "git diff";
+      "gl"  = "git log";
+      "glo" = "git log --pretty=oneline --abbrev-commit";
+      "gp"  = "git pull";
+      "gP"  = "git push";
+      "gs"  = "git status";
+      "lg"  = "lazygit";
     };
 
     oh-my-zsh = {
@@ -64,9 +72,11 @@
   # NeoVim
   programs.neovim = {
     enable = true;
+    defaultEditor = true;
     extraConfig = ''
       set number relativenumber
       set tabstop shiftwidth=2 expandtab
     '';
   };
+  environment.variables.EDITOR = "nvim";
 }

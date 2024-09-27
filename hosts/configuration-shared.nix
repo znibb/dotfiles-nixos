@@ -37,8 +37,6 @@ in {
   programs.zsh.enable = true;
   environment.shells = with pkgs; [ zsh ];
   environment.systemPackages = with pkgs; [
-    vim   # hyprland default
-    kitty # hyprland default
     neovim
     ripgrep # used by nvim
     xclip   # clipboard tool for nvim

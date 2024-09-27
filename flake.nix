@@ -16,17 +16,23 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self,
               nixpkgs,
               nixpkgs-stable,
               nixos-hardware,
-              home-manager, }@inputs: {
+              home-manager,
+              nixvim, }@inputs: {
     nixosConfigurations = (
       import ./hosts {
         inherit (nixpkgs) lib;
-        inherit inputs nixpkgs nixpkgs-stable nixos-hardware home-manager;
+        inherit inputs nixpkgs nixpkgs-stable nixos-hardware home-manager nixvim;
       }
     );
   };

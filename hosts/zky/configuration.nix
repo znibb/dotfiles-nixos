@@ -5,8 +5,12 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ../../../modules
   ];
 
+  hyprland.enable = true;
+
+  # Boot settings
   boot = {
     # Use the latest linux kernel
     kernelPackages = pkgs.linuxPackages_latest;
@@ -24,6 +28,7 @@
     };
   };
 
+  # Networking
   networking = {
     hostName = "zky";
     networkmanager = {
@@ -42,6 +47,7 @@
   # Enable the OpenSSH daemon
   services.openssh.enable = true;
 
+  # Host-specific packages
   environment.systemPackages = with pkgs; [
     dolphin
     gnupg
@@ -61,18 +67,10 @@
     };
   };
 
-  programs = {
-    # Window manager
-    hyprland = {
-      enable = true;
-      xwayland.enable = true;
-    };
-
-    # Gnupg compatibility
-    gnupg.agent = {
-      enable = true;
-      enableSSHSupport = true;
-    };
+  # Gnupg compatibility
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
   };
   
   # =========
